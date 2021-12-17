@@ -1,0 +1,8 @@
+general:
+  js:
+    js/general.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/once
+    - core/drupalSettings

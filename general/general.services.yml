@@ -1,0 +1,8 @@
+services:
+  customservice:
+    class: Drupal\general\Services\CustomService
+    arguments: ['@current_user']
+  general.event_subscriber_custom:
+    class: Drupal\general\EventSubscriber\CustomEventSubScriber
+    tags:
+      - { name: 'event_subscriber' }

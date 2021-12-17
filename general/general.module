@@ -1,0 +1,25 @@
+<?php
+
+use Drupal\general\CustomEvent;
+
+/**
+ * Implements hook_theme().
+ */
+function general_theme() {
+  return [
+    'general_block' => [
+      'variables' => [
+        'data' => [],
+      ],
+    ],
+  ];
+}
+
+function general_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
+	
+	if($entity->bundle() == 'article') {
+	  $dispatcher = \Drupal::service('event_dispatcher');
+      $event = new CustomEvent($entity->label());
+      $dispatcher->dispatch(CustomEvent::SUBMIT, $event);
+	}
+}
