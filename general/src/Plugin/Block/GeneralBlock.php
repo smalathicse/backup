@@ -56,8 +56,12 @@ class GeneralBlock extends BlockBase implements ContainerFactoryPluginInterface 
    */
   public function build() {
 	  
-	$username= $this->customservice->getUserName();  
+	$username = $this->customservice->getUserName();  
 	$userroles = $this->customservice->getUserRole();
+
+    \Drupal::service('module_handler')->invokeAll('general_node_title', [$username]);
+	\Drupal::service('module_handler')->alter('general_node_title', $username);
+	
     return [
       '#theme' => 'general_block',
       '#data' => ['name' => $username],

@@ -21,5 +21,23 @@ function general_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
 	  $dispatcher = \Drupal::service('event_dispatcher');
       $event = new CustomEvent($entity->label());
       $dispatcher->dispatch(CustomEvent::SUBMIT, $event);
-	}
+	}	
 }
+
+function general_general_node_title(&$username) {
+	dpm('test');
+}
+
+
+function general_general_node_title_alter(&$username) {
+	$node = \Drupal::routeMatch()->getParameter('node');
+	
+	if($node) {
+	  $node = \Drupal\node\Entity\Node::load($node->id());
+	  $categoryId = $node->get('field_category')->target_id;
+	  $Term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($categoryId);
+	  $username = $Term->label();
+	} 
+}
+
+
