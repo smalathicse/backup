@@ -1,0 +1,6 @@
+<div class="cache-tg-blk">
+<h4>{{ 'Recent Post'|t|upper }}</h4>
+{% for key,value in data %}
+<a href="{{ key }}" >{{ value }} </a>
+{% endfor %}
+</div>

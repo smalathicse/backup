@@ -3,12 +3,15 @@
 namespace Drupal\general\Services;
 
 use Drupal\Core\Session\AccountProxy;
+
 /**
- * Class CustomService.
+ * Class Custom Service.
  */
 class CustomService {
   /**
-   * @var \Drupal\Core\Database\Connection $database
+   * Current user.
+   *
+   * @var \Drupal\Core\Database\Connection
    */
   private $currentUser;
 
@@ -20,19 +23,22 @@ class CustomService {
   }
 
   /**
-   * Returns a a Drupal user as an owner.
+   * Returns a Drupal user as an owner.
    */
   public function getUserName() {
     return $this->currentUser->getDisplayName();
   }
-  
+
+  /**
+   * Returns a current user role.
+   */
   public function getUserRole() {
     $roles = $this->currentUser->getRoles();
-	$role = '';
-	if($roles[1]) {
-		$role = $roles[1];
-	}
-	return $role;
+    $role = '';
+    if ($roles[1]) {
+      $role = $roles[1];
+    }
+    return $role;
   }
 
 }

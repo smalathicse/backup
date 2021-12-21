@@ -12,6 +12,11 @@ function general_theme() {
         'data' => [],
       ],
     ],
+	'cache_tags_block' => [
+      'variables' => [
+        'data' => [],
+      ],
+    ],
   ];
 }
 
@@ -25,19 +30,11 @@ function general_entity_update(Drupal\Core\Entity\EntityInterface $entity) {
 }
 
 function general_general_node_title(&$username) {
-	dpm('test');
 }
 
 
 function general_general_node_title_alter(&$username) {
-	$node = \Drupal::routeMatch()->getParameter('node');
-	
-	if($node) {
-	  $node = \Drupal\node\Entity\Node::load($node->id());
-	  $categoryId = $node->get('field_category')->target_id;
-	  $Term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($categoryId);
-	  $username = $Term->label();
-	} 
+	$username = $username . ' - '. rand(10,100); 
 }
 
 
