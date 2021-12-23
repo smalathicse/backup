@@ -2,7 +2,9 @@ services:
   customservice:
     class: Drupal\general\Services\CustomService
     arguments: ['@current_user']
+    required_cache_contexts: ['languages:language_interface', 'theme', 'user']
   general.event_subscriber_custom:
     class: Drupal\general\EventSubscriber\CustomEventSubScriber
     tags:
       - { name: 'event_subscriber' }
+      

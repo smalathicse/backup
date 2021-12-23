@@ -1,4 +1,7 @@
 {% for key,value in data %}
-  <strong>Logged In User:</strong> {{ value|upper }}<br>
+  <strong>{{ 'Logged In User:'|t }}</strong> {{ value|upper }}<br>
 {% endfor %}
-<strong>Role:</strong><span class="user_role"></span><br>
+<strong>{{ 'Role:'|t }}</strong><span class="user_role"></span><br>
+
+<strong>{{ 'Custom Config Title:'|t }}</strong>
+{{ config }}

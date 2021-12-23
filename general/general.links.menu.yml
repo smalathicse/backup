@@ -1,0 +1,6 @@
+general.admin_settings_form:  
+  title: 'General Settings'  
+  route_name: general.admin_settings_form  
+  description: 'General message admin'  
+  parent: system.admin_config_system  
+  weight: 99

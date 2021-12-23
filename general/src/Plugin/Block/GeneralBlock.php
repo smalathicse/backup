@@ -6,7 +6,8 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\general\Services\CustomService;
-use Drupal\core\Cache\Cache;
+use Drupal\Core\Config\ConfigFactory;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides a 'General' Block.
@@ -23,6 +24,12 @@ class GeneralBlock extends BlockBase implements ContainerFactoryPluginInterface 
    * @var customservice\Drupal\general\Services\CustomService
    */
   protected $customservice;
+  /**
+   * Configuration Factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactory
+   */
+  protected $configFactory;
 
   /**
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
@@ -41,7 +48,8 @@ class GeneralBlock extends BlockBase implements ContainerFactoryPluginInterface 
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('customservice')
+      $container->get('customservice'),
+      $container->get('config.factory')
     );
   }
 
@@ -55,9 +63,10 @@ class GeneralBlock extends BlockBase implements ContainerFactoryPluginInterface 
    * @param \Drupal\general\Services\CustomService $custom_service
    *   Class CustomService.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CustomService $custom_service) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CustomService $custom_service, ConfigFactory $configFactory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->customservice = $custom_service;
+    $this->configFactory = $configFactory;
   }
 
   /**
@@ -67,23 +76,29 @@ class GeneralBlock extends BlockBase implements ContainerFactoryPluginInterface 
 
     $username = $this->customservice->getUserName();
     $userroles = $this->customservice->getUserRole();
+    
+    $config = $this->configFactory->get('general_config.settings');
+    $config_title = $config->get('config_title');
 
-    \Drupal::service('module_handler')->invokeAll('general_node_title', [$username]);
+    \Drupal::service('module_handler')->invoke('general_node_title', [$username]);
     \Drupal::service('module_handler')->alter('general_node_title', $username);
-
+    
     return [
       '#theme' => 'general_block',
       '#data' => ['name' => $username],
+      '#config' => $config_title,
       '#attached' => [
         'library' => ['general/general'],
         'drupalSettings' => [
           'general' => ['role' => $userroles],
         ],
-      ],
-	  '#cache' => [
-        'contexts' => ['user.roles:anonymous'],
-      ],
+      ]
     ];
   }
+  
+   public function getCacheContexts() {
+    // Vary caching of this block per user.
+     return Cache::mergeContexts(parent::getCacheContexts(), ['user']);
+   }
 
 }

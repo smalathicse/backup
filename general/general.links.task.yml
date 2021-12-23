@@ -1,0 +1,4 @@
+general_code.admin.config:
+  route_name: general_code.admin.config
+  title: Settings
+  base_route: general_code.admin.config

@@ -1,0 +1,5 @@
+general_code.admin.config:
+  title: 'Ganeral Code module'
+  base_route_name: general_code.admin.config
+  names:
+    - general_code.settings

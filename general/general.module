@@ -10,6 +10,7 @@ function general_theme() {
     'general_block' => [
       'variables' => [
         'data' => [],
+        'config' => ''
       ],
     ],
 	'cache_tags_block' => [
@@ -34,7 +35,7 @@ function general_general_node_title(&$username) {
 
 
 function general_general_node_title_alter(&$username) {
-	$username = $username . ' - '. rand(10,100); 
+	//$username = $username . ' - '. rand(10,100); 
 }
 
 
